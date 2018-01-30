@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kilohaty/obelisk.git"
+    "url": "git+https://github.com/kilohaty/pixel-swiper.git"
   },
   "author": "axi <axi@kilohaty.com>",
   "license": "MIT",
@@ -39,9 +39,9 @@
   "dependencies": {},
   "description": "canvas",
   "bugs": {
-    "url": "https://github.com/kilohaty/obelisk/issues"
+    "url": "https://github.com/kilohaty/pixel-swiper/issues"
   },
-  "homepage": "https://github.com/kilohaty/obelisk#readme",
+  "homepage": "https://github.com/kilohaty/pixel-swiper#readme",
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "webpack --config build/webpack.prod.conf.js --hide-modules",
@@ -49,6 +49,7 @@
   },
   "keywords": [
     "canvas",
-    "pixel-swipe"
+    "pixel",
+    "pixel-swiper"
   ]
 }
