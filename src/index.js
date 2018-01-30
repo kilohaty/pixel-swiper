@@ -1,5 +1,4 @@
 import Particle from './particle';
-import CalcWorker from './calc.worker.js';
 
 window.requestAnimationFrame = window.requestAnimationFrame
   || window.mozRequestAnimationFrame
@@ -25,8 +24,7 @@ function getRandomColor() {
   }).join('');
 }
 
-
-export default class PixelSwiper {
+class PixelSwiper {
   constructor(selector, options) {
     this.set(options);
     this.initialize(selector);
@@ -66,6 +64,8 @@ Object.assign(PixelSwiper.prototype, {
   particleSize: 20,
 
   onIndexChange: null,
+
+  workerPath: '',
 
   set(options) {
     for (let key in options) {
@@ -149,7 +149,8 @@ Object.assign(PixelSwiper.prototype, {
 
 
         const imgData    = this.cacheCtx.getImageData(0, 0, this.width, this.height).data;
-        const worker     = new CalcWorker();
+        const worker     = new Worker(this.workerPath);
+
         worker.onmessage = e => resolve(e.data);
         worker.postMessage({
           imageData: imgData,
@@ -318,3 +319,5 @@ Object.assign(PixelSwiper.prototype, {
     this.ctx.drawImage(this.cacheCanvas, 0, 0);
   },
 });
+
+module.exports = PixelSwiper;

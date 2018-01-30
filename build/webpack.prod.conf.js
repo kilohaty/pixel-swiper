@@ -7,18 +7,20 @@ const ExtractTextPlugin  = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = Merge(BaseConfig, {
-  entry: {index: './src/index.js'},
+  entry: {
+    'pixelSwiper': './src/index.js',
+    'pixelSwiper.worker': './src/calc.worker.js'
+  },
 
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: '[name].js',
     libraryTarget: 'umd',
-    library: 'pixel-swiper'
+    library: 'pixelSwiper'
   },
 
   module: {
     loaders: [
-      {test: /\.worker\.js$/, use: {loader: 'worker-loader'}},
       {test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/},
     ]
   },
