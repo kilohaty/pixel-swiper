@@ -1,4 +1,5 @@
 import Particle from './particle';
+import calc from './calc';
 
 window.requestAnimationFrame = window.requestAnimationFrame
   || window.mozRequestAnimationFrame
@@ -66,6 +67,8 @@ Object.assign(PixelSwiper.prototype, {
   onIndexChange: null,
 
   workerPath: '',
+
+  useWebWorker: false,
 
   set(options) {
     for (let key in options) {
@@ -147,17 +150,20 @@ Object.assign(PixelSwiper.prototype, {
           await this.renderImageToCacheCanvas(options);
         }
 
-
-        const imgData    = this.cacheCtx.getImageData(0, 0, this.width, this.height).data;
-        const worker     = new Worker(this.workerPath);
-
-        worker.onmessage = e => resolve(e.data);
-        worker.postMessage({
+        const imgData  = this.cacheCtx.getImageData(0, 0, this.width, this.height).data;
+        const postData = {
           imageData: imgData,
           width: this.width,
           height: this.height,
           size: this.particleSize,
-        });
+        };
+        if (this.useWebWorker) {
+          const worker     = new Worker(this.workerPath);
+          worker.onmessage = e => resolve(e.data);
+          worker.postMessage(postData);
+        } else {
+          resolve(calc(postData));
+        }
       } catch (err) {
         console.error(err);
         reject(err);
@@ -206,9 +212,7 @@ Object.assign(PixelSwiper.prototype, {
       this.index = 0;
     }
 
-    this.onIndexChange && this.onIndexChange({
-      index: this.index,
-    });
+    this.onIndexChange && this.onIndexChange({index: this.index});
   },
 
   next() {
@@ -230,7 +234,31 @@ Object.assign(PixelSwiper.prototype, {
 
     if (this.randomPosition) {
       const data = JSON.parse(JSON.stringify(pixelData));
-      this.collections.forEach((p) => {
+
+      function getDataByPos(row, col) {
+        let res = null;
+        for (let i = 0; i < data.length; i++) {
+          const d = data[i];
+          if (d.row === row && d.col === col) {
+            res = {cell: d, index: i};
+            break;
+          }
+        }
+        return res;
+      }
+
+      // ignore same pixel
+      const ignoreIndex = [];
+      this.collections.forEach((p, i) => {
+        const cellData = getDataByPos(p.row, p.col);
+        if (cellData && cellData.cell && (cellData.cell.bg.a === 0 && p.tBg.a === 0)) {
+          data.splice(cellData.index, 1);
+          ignoreIndex.push(i);
+        }
+      });
+
+      this.collections.forEach((p, i) => {
+        if (ignoreIndex.indexOf(i) !== -1) return;
         const randomIndex = randomInt(0, data.length);
         const d           = data[randomIndex];
         const bg          = d.bg;
