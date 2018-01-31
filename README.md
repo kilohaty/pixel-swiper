@@ -51,8 +51,16 @@ const swiper   = new pixelSwiper('#c', {
       ]
 });
 ```
+# API
+## Constructor
+new pixelSwiper(htmlSelector, options);
 
-# Options
+| Names | Required | Type | Description
+| --- | --- | --- | ---
+| htmlSelector | `true` | `String` |  canvas selector
+| options | `true` | `Object` | initial options
+
+## Options
 | Names | Defaults | Description
 | --- | --- | ---
 | width | `0` | canvas width
@@ -65,7 +73,7 @@ const swiper   = new pixelSwiper('#c', {
 | swipeList | `[]` | swipe config 
 
 
-# swipeList Options
+## swipeList Options
 | Names | Defaults | Description
 | --- | --- | ---
 | paddingLeft | `0` | canvas paddingLeft
