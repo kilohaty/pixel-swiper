@@ -1,7 +1,11 @@
 # pixel-swiper
 > pixel picture or text effect by canvas
 
-[DEMO online](http://output.jsbin.com/zizogesupi/)
+[DEMO 1](https://jsbin.com/kunumik/edit?html,output)
+
+[DEMO 2](http://jsbin.com/fifasax/edit?html,output)
+
+[DEMO 3](http://jsbin.com/dehavaw/edit?html,output)
 
 ![gif preview](demo.gif)
 

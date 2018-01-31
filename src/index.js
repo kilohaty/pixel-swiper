@@ -262,9 +262,6 @@ Object.assign(PixelSwiper.prototype, {
         const randomIndex = randomInt(0, data.length);
         const d           = data[randomIndex];
         const bg          = d.bg;
-        if (!this.animation) {
-          p.set({bg: {r: bg.r, g: bg.g, b: bg.b, a: bg.a}});
-        }
         p.set({
           row: d.row,
           col: d.col,
@@ -282,9 +279,6 @@ Object.assign(PixelSwiper.prototype, {
       this.collections.forEach(p => {
         const d  = pixelData[p.row * this.colNum + p.col];
         const bg = d.bg;
-        if (!this.animation) {
-          p.set({bg: {r: bg.r, g: bg.g, b: bg.b, a: bg.a}});
-        }
         p.set({
           oBg: {r: bg.r, g: bg.g, b: bg.b, a: bg.a},
           tBg: {r: bg.r, g: bg.g, b: bg.b, a: bg.a}
@@ -338,6 +332,9 @@ Object.assign(PixelSwiper.prototype, {
   render() {
     this.cacheCtx.clearRect(0, 0, this.width, this.height);
     this.collections.forEach(p => {
+      if (!this.animation) {
+        p.set({bg: {r: p.tBg.r, g: p.tBg.g, b: p.tBg.b, a: p.tBg.a}});
+      }
       this.cacheCtx.save();
       p.update();
       p.render({ctx: this.cacheCtx});
