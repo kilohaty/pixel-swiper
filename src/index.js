@@ -100,7 +100,7 @@ Object.assign(PixelSwiper.prototype, {
     ctx.clearRect(0, 0, this.width, this.height);
     ctx.save();
     ctx.textBaseline = 'top';
-    ctx.font         = `${fontSize}px 'microsoft yahei light'`;
+    ctx.font         = `${fontSize || 12}px 'microsoft yahei light'`;
     ctx.fillStyle    = randomColor ? getRandomColor() : color || '#000000';
     ctx.fillText(text, paddingLeft, paddingTop);
     ctx.restore();
