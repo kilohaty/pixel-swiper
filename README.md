@@ -1,13 +1,22 @@
 # pixel-swiper
 > pixel picture or text effect by canvas
 
-[DEMO 1](https://jsbin.com/kunumik/edit?html,output)
+[DEMO 1](https://jsbin.com/giwusop/edit?html,output)
 
-[DEMO 2](http://jsbin.com/fifasax/edit?html,output)
+![gif preview](demo_1.gif)
 
-[DEMO 3](http://jsbin.com/dehavaw/edit?html,output)
+[DEMO 2](https://jsbin.com/kunumik/edit?html,output)
 
-![gif preview](demo.gif)
+![gif preview](demo_2.gif)
+
+[DEMO 3](http://jsbin.com/fifasax/edit?html,output)
+
+![gif preview](demo_3.gif)
+
+[DEMO 4](http://jsbin.com/dehavaw/edit?html,output)
+
+![gif preview](demo_4.gif)
+
 
 # Browser
  ```html
