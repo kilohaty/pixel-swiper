@@ -34,6 +34,14 @@ class PixelSwiper {
 
 Object.assign(PixelSwiper.prototype, {
 
+  paused: false,
+
+  loop: true,
+
+  swipeCount: 0,
+
+  loopCount: 0,
+
   width: 0,
 
   height: 0,
@@ -209,30 +217,67 @@ Object.assign(PixelSwiper.prototype, {
     this.lastIndex = this.index;
     this.index++;
     if (this.index >= this.swipeList.length) {
+      if (!this.loop) {
+        this.paused = true;
+        return;
+      }
       this.index = 0;
+      this.loopCount++;
     }
 
+    this.swipeCount++;
     this.onIndexChange && this.onIndexChange({index: this.index});
   },
 
   next() {
+    if (this.paused) return;
     this.nextIndex();
     this.updateCollections();
   },
 
-  loop() {
+  loopSwiper() {
+    if (this.paused) return;
     const duration = this.swipeList[this.index].duration;
     if (!duration) return;
     setTimeout(() => {
       this.next();
-      this.loop();
+      this.loopSwiper();
     }, duration);
   },
 
-  updateCollections() {
-    const pixelData = this.swipeList[this.index].pixelData;
+  getSwipeConfig() {
+    let animation      = this.animation;
+    let randomPosition = this.randomPosition;
+    const subConfig    = this.swipeList[this.index];
 
-    if (this.randomPosition) {
+    // initial config
+    if (this.swipeCount === 0) {
+      if (typeof subConfig.initialAnimation === 'boolean') {
+        animation = subConfig.initialAnimation;
+      }
+      if (typeof subConfig.initialRandomPosition === 'boolean') {
+        randomPosition = subConfig.initialRandomPosition;
+      }
+    }
+
+    return Object.assign({}, {
+      width: this.width,
+      height: this.height,
+      particleSize: this.particleSize,
+      velocity: this.velocity,
+      shape: this.shape,
+      animation: animation,
+      randomPosition: randomPosition,
+    }, subConfig);
+  },
+
+  updateCollections() {
+    if (this.paused) return;
+
+    const pixelData = this.swipeList[this.index].pixelData;
+    const config    = this.getSwipeConfig();
+
+    if (config.randomPosition) {
       const data = JSON.parse(JSON.stringify(pixelData));
 
       function getDataByPos(row, col) {
@@ -309,7 +354,7 @@ Object.assign(PixelSwiper.prototype, {
 
       this.updateCollections();
       this.render();
-      this.loop();
+      this.loopSwiper();
       this.loopAnim();
     } catch (err) {
       console.error(err);
@@ -330,9 +375,10 @@ Object.assign(PixelSwiper.prototype, {
   },
 
   render() {
+    const config = this.getSwipeConfig();
     this.cacheCtx.clearRect(0, 0, this.width, this.height);
     this.collections.forEach(p => {
-      if (!this.animation) {
+      if (!config.animation) {
         p.set({bg: {r: p.tBg.r, g: p.tBg.g, b: p.tBg.b, a: p.tBg.a}});
       }
       this.cacheCtx.save();
