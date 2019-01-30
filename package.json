@@ -1,7 +1,7 @@
 {
   "name": "pixel-swiper",
   "version": "0.1.7",
-  "main": "dist/index.js",
+  "main": "dist/pixelSwiper.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kilohaty/pixel-swiper.git"
