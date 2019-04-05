@@ -9,6 +9,7 @@ window.requestAnimationFrame = window.requestAnimationFrame
 function loadImage(src) {
   return new Promise((resolve, reject) => {
     const image   = new Image();
+    image.crossOrigin = '';
     image.onload  = resolve.bind(null, image);
     image.onerror = reject;
     image.src     = src;
